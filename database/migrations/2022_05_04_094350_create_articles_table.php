@@ -19,12 +19,12 @@ return new class extends Migration
                 ->constrained('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('subject');
             $table->longText('body');
             $table->text('tags');
             $table->integer('views')->default(0);
             $table->integer('likes')->default(0);
             $table->string('thumbnail');
+            $table->text('subject');
             $table->string('image');
             $table->softDeletes();
             $table->timestamps();
