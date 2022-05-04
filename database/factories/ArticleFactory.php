@@ -24,7 +24,7 @@ class ArticleFactory extends Factory
             'user_id' => $this->faker->numberBetween(1, 5),
             'thumbnail' => 'https://i.pravatar.cc/150?img='.rand(10, 50),
             'image' => 'https://i.pravatar.cc/300?img='.rand(10, 50),
-            'body' => $this->faker->paragraph(rand(1, 3)),
+            'body' => $this->faker->sentence(500),
         ];
     }
 }

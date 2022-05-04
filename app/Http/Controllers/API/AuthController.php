@@ -37,17 +37,9 @@ class AuthController extends Controller
 
     public function user(){
         $user = auth()->user();
-        $users = User::where('id', '!=', auth()->user()->id)->limit(50)->latest()->get();
-        $users->each(function($u) use ($user){
-            $u->message = $user->getUserExistingMessagesWithReceiver($u);
-            return $u;
-        });
         return response->json([
             'user' => $user,
-            'messages' =>  $user->messages(),
-            'chats' =>  $user->chats(),
-            'users' => $users
-        ], Response::HTTP_OK);
+        ], 200);
     }
 
     public function update(Request $request)
@@ -56,7 +48,7 @@ class AuthController extends Controller
         $user->update($request->all());
         return response->json([
             'user' => $user
-        ], Response::HTTP_OK);
+        ], 200);
     }
 
 
@@ -67,10 +59,10 @@ class AuthController extends Controller
             return response->json([
                 'user' => $user,
                 'token' => $token
-            ], Response::HTTP_OK);
+            ], 200);
         }
         else{
-            return response->json(,[
+            return response->json([
                 'message' => 'Login Failed',
             ], 308);
         }
@@ -79,6 +71,8 @@ class AuthController extends Controller
 
     public function logout(){
         auth()->user()->tokens()->delete();
-        return response->json("Logged Out", Response::HTTP_OK);
+        return response->json([
+            "Logged Out"
+        ],200);
     }
 }

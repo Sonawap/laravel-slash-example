@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Requests\PostCommentRequest;
+use App\Models\Article;
 
 class ArticleController extends Controller
 {
@@ -18,11 +19,12 @@ class ArticleController extends Controller
     }
 
     public function show($id){
-        $article = Article::findOrFail($id);
+        $article = Article::with(['comments.user'])->findOrFail($id);
+        $article->tags = json_decode($article->tags);
 
         return response()->json([
             'status' => true,
-            'article' => $article->with('comments')
+            'article' => $article
         ],200);
     }
 
@@ -44,6 +46,17 @@ class ArticleController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Like Saved'
+        ],200);
+    }
+
+    public function view(LikeArticuleRequest $request){
+        $article = Article::findOrFail($request->article_id);
+        $article->view = $article->view + 1;
+        $article->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'view Saved'
         ],200);
     }
 
