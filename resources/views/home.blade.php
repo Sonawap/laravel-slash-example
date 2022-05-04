@@ -15,7 +15,7 @@
                             <div class="card-body">
                                 <p>Posted by: {{ $article->user->name }} | Comments: {{ $article->comments->count() }} <br> Views: {{ $article->views }} | likes: {{ $article->likes }}</p>
                                 <a href="{{ route('show', $article->id) }}" class="text-decoration-none text-primary"><h5 class="card-title text-primary">{{ $article->subject }}</h5></a>
-                                <p class="card-text">{{ Str::substr($article->body, 0, 200) }}...</p>
+                                <p class="card-text">{{ Str::substr($article->body, 0, 100) }}...</p>
                                 @foreach ($article->tags as $tag)
                                     <button type="button" class="btn btn-outline-secondary">{{ $tag }}</button>                            
                                 @endforeach
