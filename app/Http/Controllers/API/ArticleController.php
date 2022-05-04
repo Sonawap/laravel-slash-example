@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Requests\PostCommentRequest;
 use App\Models\Article;
+use App\Http\Requests\LikeArticuleRequest;
 
 class ArticleController extends Controller
 {
@@ -38,25 +39,27 @@ class ArticleController extends Controller
     }
 
 
-    public function like(LikeArticuleRequest $request){
-        $article = Article::findOrFail($request->article_id);
-        $article->like = $article->like + 1;
+    public function like($id){
+        $article = Article::findOrFail($id);
+        $article->likes = $article->likes + 1;
         $article->save();
 
         return response()->json([
             'status' => true,
-            'message' => 'Like Saved'
+            'message' => 'Like Saved',
+            'like' => $article->likes
         ],200);
     }
 
-    public function view(LikeArticuleRequest $request){
-        $article = Article::findOrFail($request->article_id);
-        $article->view = $article->view + 1;
+    public function view($id){
+        $article = Article::findOrFail($id);
+        $article->views = $article->views + 1;
         $article->save();
 
         return response()->json([
             'status' => true,
-            'message' => 'view Saved'
+            'message' => 'view Saved', 
+            'view' =>$article->views
         ],200);
     }
 

@@ -36,12 +36,13 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
 
     Route::prefix('articles')->group(function () {
         Route::post('postComment', [ArticleController::Class, 'postComment']);
-        Route::post('{id}/like', [ArticleController::class, 'like']);
-        Route::post('{id}/views', [ArticleController::class, 'view']);
     });
 });
 
 Route::prefix('articles')->group(function () {
+
+    Route::post('{id}/like', [ArticleController::class, 'like']);
+    Route::post('{id}/views', [ArticleController::class, 'view']);
     
     Route::get('{id}/comment', [ArticleController::class, 'comment']);
     Route::get('{id}', [ArticleController::class, 'show']);

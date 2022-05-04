@@ -5408,6 +5408,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     article_id: {
@@ -5417,7 +5419,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      article: {}
+      article: {},
+      liked: false
     };
   },
   methods: {
@@ -5428,10 +5431,26 @@ __webpack_require__.r(__webpack_exports__);
         _this.article = res.data.article;
         console.log(res.data.article);
       });
+    },
+    addLike: function addLike() {
+      var _this2 = this;
+
+      axios.post('/api/articles/' + this.article_id + '/like').then(function (res) {
+        _this2.article.likes = res.data.like;
+        _this2.liked = true;
+      });
+    },
+    addView: function addView() {
+      var _this3 = this;
+
+      axios.post('/api/articles/' + this.article_id + '/views').then(function (res) {
+        _this3.article.views = res.data.view;
+      });
     }
   },
   mounted: function mounted() {
     this.loadComment();
+    this.addView();
   }
 });
 
@@ -28078,6 +28097,25 @@ var render = function () {
                   ),
                 ]),
                 _vm._v(" "),
+                !_vm.liked
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success my-3",
+                        on: { click: _vm.addLike },
+                      },
+                      [_vm._v("Like Article")]
+                    )
+                  : _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success my-3",
+                        attrs: { disabled: "" },
+                        on: { click: _vm.addLike },
+                      },
+                      [_vm._v("Liked")]
+                    ),
+                _vm._v(" "),
                 _c("p", { staticClass: "card-text" }, [
                   _vm._v(_vm._s(_vm.article.body) + "..."),
                 ]),
@@ -28112,7 +28150,11 @@ var render = function () {
       { staticClass: "card p-3" },
       [
         _c("h4", { staticClass: "card-title" }, [
-          _vm._v("Comments (" + _vm._s(_vm.article.comments.length) + ")"),
+          _vm._v(
+            "Comments (" +
+              _vm._s(_vm.article.comments ? _vm.article.comments.length : 0) +
+              ")"
+          ),
         ]),
         _vm._v(" "),
         _vm._l(_vm.article.comments, function (comment) {

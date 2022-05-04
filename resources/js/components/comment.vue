@@ -8,6 +8,8 @@
                         <div class="card-body px-0">
                             <h3 class="card-title">{{ article.subject }}</h3>
                             <p>Posted by: {{ article.user ? article.user.name : null }} | Comments: {{ article.comments ? article.comments.length : 0  }} | Views: {{ article.views }} | likes: {{ article.likes }}</p>
+                            <button @click="addLike" v-if="!liked" class="btn btn-success my-3">Like Article</button>
+                            <button @click="addLike" v-else class="btn btn-success my-3" disabled>Liked</button>
                             <p class="card-text">{{ article.body }}...</p>
                             <button 
                                 type="button" 
@@ -24,7 +26,7 @@
         </div>
 
         <div class="card p-3">
-            <h4 class="card-title">Comments ({{ article.comments.length }})</h4>
+            <h4 class="card-title">Comments ({{ article.comments? article.comments.length : 0 }})</h4>
             <div 
                 class="card m-1 p-3"
                 v-for="comment in article.comments"
@@ -48,7 +50,8 @@
         },
         data(){
             return {
-                article: {}
+                article: {},
+                liked: false,
             }
         },
         methods: {
@@ -57,10 +60,22 @@
                     this.article = res.data.article
                     console.log(res.data.article)
                 });
+            },
+            addLike(){
+                axios.post('/api/articles/'+this.article_id+'/like').then((res) => {
+                    this.article.likes = res.data.like;
+                    this.liked = true;
+                });
+            },
+            addView(){
+                axios.post('/api/articles/'+this.article_id+'/views').then((res) => {
+                    this.article.views = res.data.view
+                });
             }
         },
         mounted() {
             this.loadComment();
+            this.addView();
         }
     }
 </script>
