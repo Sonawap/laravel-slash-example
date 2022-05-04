@@ -6,4 +6,5 @@
 1. Clone the project
 2. Php artisan migrate
 3. php artisan db:seed
-4. php artisan serve
+4. run composer install
+5. php artisan serve
