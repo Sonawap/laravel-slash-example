@@ -5406,10 +5406,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     article_id: {
@@ -5420,16 +5416,20 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       article: {},
-      liked: false
+      liked: false,
+      isLoading: false
     };
   },
   methods: {
     loadComment: function loadComment() {
       var _this = this;
 
+      this.isLoading = true;
       axios.get('/api/articles/' + this.article_id).then(function (res) {
         _this.article = res.data.article;
-        console.log(res.data.article);
+        _this.isLoading = false;
+      })["catch"](function () {
+        alert('sorry, post cannot be displayat the moment');
       });
     },
     addLike: function addLike() {
@@ -28064,117 +28064,125 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-md-12" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12" }, [
-            _c("img", {
-              staticClass: "card-img-top",
-              attrs: { src: _vm.article.image, alt: "Blog Post" },
-            }),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "card-body px-0" },
-              [
-                _c("h3", { staticClass: "card-title" }, [
-                  _vm._v(_vm._s(_vm.article.subject)),
-                ]),
-                _vm._v(" "),
-                _c("p", [
-                  _vm._v(
-                    "Posted by: " +
-                      _vm._s(_vm.article.user ? _vm.article.user.name : null) +
-                      " | Comments: " +
-                      _vm._s(
-                        _vm.article.comments ? _vm.article.comments.length : 0
-                      ) +
-                      " | Views: " +
-                      _vm._s(_vm.article.views) +
-                      " | likes: " +
-                      _vm._s(_vm.article.likes)
-                  ),
-                ]),
-                _vm._v(" "),
-                !_vm.liked
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-success my-3",
-                        on: { click: _vm.addLike },
-                      },
-                      [_vm._v("Like Article")]
-                    )
-                  : _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-success my-3",
-                        attrs: { disabled: "" },
-                        on: { click: _vm.addLike },
-                      },
-                      [_vm._v("Liked")]
-                    ),
-                _vm._v(" "),
-                _c("p", { staticClass: "card-text" }, [
-                  _vm._v(_vm._s(_vm.article.body) + "..."),
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.article.tags, function (tag) {
-                  return _c(
+  return _c("div", [
+    !_vm.isLoading
+      ? _c("div", { staticClass: "col-md-12" }, [
+          _c("img", {
+            staticClass: "card-img-top",
+            attrs: { src: _vm.article.image, alt: "Blog Post" },
+          }),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-body px-0" },
+            [
+              _c("h3", { staticClass: "card-title" }, [
+                _vm._v(_vm._s(_vm.article.subject)),
+              ]),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v(
+                  "Posted by: " +
+                    _vm._s(_vm.article.user ? _vm.article.user.name : null) +
+                    " | Comments: " +
+                    _vm._s(
+                      _vm.article.comments ? _vm.article.comments.length : 0
+                    ) +
+                    " | Views: " +
+                    _vm._s(_vm.article.views) +
+                    " | likes: " +
+                    _vm._s(_vm.article.likes)
+                ),
+              ]),
+              _vm._v(" "),
+              !_vm.liked
+                ? _c(
                     "button",
                     {
-                      key: tag,
-                      staticClass: "btn btn-outline-secondary mx-2",
-                      attrs: { type: "button" },
+                      staticClass: "btn btn-success my-3",
+                      on: { click: _vm.addLike },
                     },
-                    [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(tag) +
-                          "\n                        "
-                      ),
-                    ]
+                    [_vm._v("Like Article")]
                   )
-                }),
-              ],
-              2
-            ),
-          ]),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "card p-3" },
-      [
-        _c("h4", { staticClass: "card-title" }, [
-          _vm._v(
-            "Comments (" +
-              _vm._s(_vm.article.comments ? _vm.article.comments.length : 0) +
-              ")"
+                : _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success my-3",
+                      attrs: { disabled: "" },
+                      on: { click: _vm.addLike },
+                    },
+                    [_vm._v("Liked")]
+                  ),
+              _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v(_vm._s(_vm.article.body) + "..."),
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.article.tags, function (tag) {
+                return _c(
+                  "button",
+                  {
+                    key: tag,
+                    staticClass: "btn btn-outline-secondary mx-2",
+                    attrs: { type: "button" },
+                  },
+                  [
+                    _vm._v(
+                      "\n                " + _vm._s(tag) + "\n            "
+                    ),
+                  ]
+                )
+              }),
+            ],
+            2
           ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card p-3" },
+            [
+              _c("h4", { staticClass: "card-title" }, [
+                _vm._v(
+                  "Comments (" +
+                    _vm._s(
+                      _vm.article.comments ? _vm.article.comments.length : 0
+                    ) +
+                    ")"
+                ),
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.article.comments, function (comment) {
+                return _c(
+                  "div",
+                  { key: comment.id, staticClass: "card m-1 p-3" },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(comment.comment) +
+                        "\n                "
+                    ),
+                    _c("p", [
+                      _vm._v(
+                        "Comment by: " +
+                          _vm._s(
+                            comment.user ? comment.user.name : "Not Avaliable"
+                          )
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("p", [
+                      _vm._v("Date Posted: " + _vm._s(comment.created_at)),
+                    ]),
+                  ]
+                )
+              }),
+            ],
+            2
+          ),
+        ])
+      : _c("div", { staticClass: "my-4" }, [
+          _c("h4", { staticClass: "text-center" }, [_vm._v("Loading ...")]),
         ]),
-        _vm._v(" "),
-        _vm._l(_vm.article.comments, function (comment) {
-          return _c("div", { key: comment.id, staticClass: "card m-1 p-3" }, [
-            _vm._v(
-              "\n            " + _vm._s(comment.comment) + "\n            "
-            ),
-            _c("p", [
-              _vm._v(
-                "Comment by: " +
-                  _vm._s(comment.user ? comment.user.name : "Not Avaliable")
-              ),
-            ]),
-            _vm._v(" "),
-            _c("p", [_vm._v("Date Posted: " + _vm._s(comment.created_at))]),
-          ])
-        }),
-      ],
-      2
-    ),
   ])
 }
 var staticRenderFns = []
