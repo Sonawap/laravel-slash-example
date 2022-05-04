@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <div class="col-md-12" v-if="!isLoading">
             <img class="card-img-top" :src="article.image" alt="Blog Post">
             <div class="card-body px-0">
@@ -19,6 +20,16 @@
             </div>
             <div class="card p-3">
                 <h4 class="card-title">Comments ({{ article.comments? article.comments.length : 0 }})</h4>
+                <div class="my-4" v-if="user_id">
+                    <form @submit.prevent="postComment()">
+                        <textarea v-model="comment" class="form-control">Your commment</textarea>
+                        <button type="submit" class="btn btn-success mt-2" v-if="!isLoadingComment">Comment</button>
+                        <button class="btn btn-success mt-2" disabled v-else >Posting...</button>
+                    </form>
+                </div>
+                <div class="my-4" v-else>
+                    <h4>Login to Comment</h4>
+                </div>
                 <div 
                     class="card m-1 p-3"
                     v-for="comment in article.comments"
@@ -30,6 +41,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="my-4" v-else>
             <h4 class="text-center">Loading ...</h4>
         </div>
@@ -42,23 +54,49 @@
             article_id:{
                 type: [Number],
                 required: true
+            },
+            user_id:{
+                type: [Number],
+                required:true
             }
         },
         data(){
             return {
                 article: {},
                 liked: false,
-                isLoading: false
+                isLoading: false,
+                comment: '',
+                isLoadingComment: false
             }
         },
         methods: {
+            postComment(){
+                if(this.comment.length < 1){
+                    alert('type a comment');
+                }else{
+                    this.isLoadingComment = true;
+                    let data = {
+                        'comment' : this.comment,
+                        'article_id' : this.article_id
+                    }
+                    axios.post('/postComment',data).then((res) => {
+                        this.article.comments.unshift(res.data.comment);
+                        this.comment = '';
+                        this.isLoadingComment = false;
+                    }).catch(() => {
+                        this.comment = '';
+                        this.isLoadingComment = false;
+                        alert("comment cannot be posted");
+                    });
+                }
+            },
             loadComment(){
                 this.isLoading = true;
                 axios.get('/api/articles/'+this.article_id).then((res) => {
                     this.article = res.data.article
                     this.isLoading = false;
                 }).catch(()=>{
-                    alert('sorry, post cannot be displayat the moment');
+                    alert('sorry, post cannot be display at the moment');
                 });
             },
             addLike(){

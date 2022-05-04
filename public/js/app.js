@@ -5406,9 +5406,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     article_id: {
+      type: [Number],
+      required: true
+    },
+    user_id: {
       type: [Number],
       required: true
     }
@@ -5417,34 +5433,59 @@ __webpack_require__.r(__webpack_exports__);
     return {
       article: {},
       liked: false,
-      isLoading: false
+      isLoading: false,
+      comment: '',
+      isLoadingComment: false
     };
   },
   methods: {
-    loadComment: function loadComment() {
+    postComment: function postComment() {
       var _this = this;
+
+      if (this.comment.length < 1) {
+        alert('type a comment');
+      } else {
+        this.isLoadingComment = true;
+        var data = {
+          'comment': this.comment,
+          'article_id': this.article_id
+        };
+        axios.post('/postComment', data).then(function (res) {
+          _this.article.comments.unshift(res.data.comment);
+
+          _this.comment = '';
+          _this.isLoadingComment = false;
+        })["catch"](function () {
+          _this.comment = '';
+          _this.isLoadingComment = false;
+          alert("comment cannot be posted");
+        });
+      }
+    },
+    loadComment: function loadComment() {
+      var _this2 = this;
 
       this.isLoading = true;
       axios.get('/api/articles/' + this.article_id).then(function (res) {
-        _this.article = res.data.article;
-        _this.isLoading = false;
+        _this2.article = res.data.article;
+        _this2.isLoading = false;
       })["catch"](function () {
-        alert('sorry, post cannot be displayat the moment');
+        alert('sorry, post cannot be display at the moment');
       });
     },
     addLike: function addLike() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.post('/api/articles/' + this.article_id + '/like').then(function (res) {
-        _this2.article.likes = res.data.like;
-        _this2.liked = true;
+        _this3.article.likes = res.data.like;
+        _this3.liked = true;
       });
     },
     addView: function addView() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.post('/api/articles/' + this.article_id + '/views').then(function (res) {
-        _this3.article.views = res.data.view;
+        _this4.article.views = res.data.view;
       });
     }
   },
@@ -28150,6 +28191,68 @@ var render = function () {
                     ")"
                 ),
               ]),
+              _vm._v(" "),
+              _vm.user_id
+                ? _c("div", { staticClass: "my-4" }, [
+                    _c(
+                      "form",
+                      {
+                        on: {
+                          submit: function ($event) {
+                            $event.preventDefault()
+                            return _vm.postComment()
+                          },
+                        },
+                      },
+                      [
+                        _c(
+                          "textarea",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.comment,
+                                expression: "comment",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            domProps: { value: _vm.comment },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.comment = $event.target.value
+                              },
+                            },
+                          },
+                          [_vm._v("Your commment")]
+                        ),
+                        _vm._v(" "),
+                        !_vm.isLoadingComment
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success mt-2",
+                                attrs: { type: "submit" },
+                              },
+                              [_vm._v("Comment")]
+                            )
+                          : _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success mt-2",
+                                attrs: { disabled: "" },
+                              },
+                              [_vm._v("Posting...")]
+                            ),
+                      ]
+                    ),
+                  ])
+                : _c("div", { staticClass: "my-4" }, [
+                    _c("h4", [_vm._v("Login to Comment")]),
+                  ]),
               _vm._v(" "),
               _vm._l(_vm.article.comments, function (comment) {
                 return _c(

@@ -7,4 +7,5 @@
 2. Php artisan migrate
 3. php artisan db:seed
 4. run composer install
-5. php artisan serve
+5. npm install
+6. php artisan serve

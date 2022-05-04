@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     });
 });
 
+
 Route::prefix('articles')->group(function () {
 
     Route::post('{id}/like', [ArticleController::class, 'like']);
