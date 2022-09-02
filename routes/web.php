@@ -20,3 +20,6 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::get('/article/{id}', [App\Http\Controllers\HomeController::class, 'show'])->name('show');
 
 Route::post('postComment', [App\Http\Controllers\HomeController::class, 'postComment']);
+
+Route::get('test', [App\Http\Controllers\HomeController::class, 'test']);
+

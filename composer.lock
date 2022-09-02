@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b48e51cf2e3a84d07f63a74dc5cb6852",
+    "content-hash": "c3a4733ef226246e315bb0897b4cbcee",
     "packages": [
         {
             "name": "brick/math",
@@ -2787,6 +2787,63 @@
                 }
             ],
             "time": "2022-03-27T21:42:02+00:00"
+        },
+        {
+            "name": "sonawap/laravel-slash",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Sonawap/Laravel-Slash.git",
+                "reference": "7e9bfbf4b12b3b45b428fa1de556e294ede77c4e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Sonawap/Laravel-Slash/zipball/7e9bfbf4b12b3b45b428fa1de556e294ede77c4e",
+                "reference": "7e9bfbf4b12b3b45b428fa1de556e294ede77c4e",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.0.1"
+            },
+            "type": "package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Sonawap\\Slash\\SlashProvider"
+                    ],
+                    "aliases": {
+                        "Slash": "Sonawap\\Slash\\Facade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sonawap\\Slash\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "sonawap",
+                    "email": "paulsola79@gmail.com"
+                }
+            ],
+            "description": "Laravel discount, integrate discount and coupon toyour laravel app",
+            "keywords": [
+                "coupon",
+                "discount",
+                "e-commerce",
+                "laravel",
+                "shopping"
+            ],
+            "support": {
+                "issues": "https://github.com/Sonawap/Laravel-Slash/issues",
+                "source": "https://github.com/Sonawap/Laravel-Slash"
+            },
+            "time": "2022-07-12T05:49:25+00:00"
         },
         {
             "name": "symfony/console",
